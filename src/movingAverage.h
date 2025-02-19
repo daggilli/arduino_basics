@@ -5,7 +5,22 @@
 template <typename T>
 class MovingAverage {
  public:
-  MovingAverage() : _idx(0), _sum(0) {}
+  MovingAverage() : _idx(0), _sum(0) { _buffer = new T[MOV_AVG_LEN]; }
+  MovingAverage(const MovingAverage &ma) = delete;
+  MovingAverage(const MovingAverage &&ma) noexcept : _idx(ma._idx), _sum(ma._sum) {
+    _buffer = ma._buffer;
+    ma._buffer = nullptr;
+  }
+  MovingAverage &operator=(const MovingAverage &ma) = delete;
+  MovingAverage &operator=(const MovingAverage &&ma) {
+    _idx = ma._idx;
+    _sum = ma._sum;
+    _buffer = ma._buffer;
+    ma._buffer = nullptr;
+  }
+
+  ~MovingAverage() { delete[] _buffer; }
+
   void fill(const T value) {
     for (size_t i = 0; i < MOV_AVG_LEN; i++) {
       _buffer[i] = value;
@@ -21,7 +36,7 @@ class MovingAverage {
   const T meanValue() const { return _sum / MOV_AVG_LEN; };
 
  private:
-  T _buffer[MOV_AVG_LEN];
+  T *_buffer;
   size_t _idx;
   T _sum;
 };
