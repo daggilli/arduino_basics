@@ -5,3 +5,6 @@ A small project to demonstrate a number of elementary features of the Arduino Un
 This is very basic stuff but still useful to beginnners.
 
 The development environment is PlatformIO.
+
+The setup used for this example is as follows:
+![Project schematics](docs/arduino_basics.png)
